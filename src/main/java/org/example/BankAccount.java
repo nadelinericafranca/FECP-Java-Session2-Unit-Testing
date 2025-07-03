@@ -1,8 +1,5 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-
 public class BankAccount {
     private int accountNumber;
     private String holderName;
@@ -22,14 +19,19 @@ public class BankAccount {
         this.balance += depositAmount;
     }
 
-    public void withdraw(double withdrawAmount) {
-        this.balance -= withdrawAmount;
+    public void withdraw(double withdrawalAmount) {
+        if (this.balance < withdrawalAmount) {
+            System.out.println("Withdrawal amount exceeds balance.");
+        } else {
+            this.balance -= withdrawalAmount;
+        }
     }
 
     public void displayInformation() {
-        System.out.println("Account Number: " + accountNumber);
-        System.out.println("Holder Name: " + holderName);
-        System.out.println("Balance: " + balance);
+        System.out.println("Account Number: " + this.accountNumber);
+        System.out.println("Holder Name: " + this.holderName);
+        System.out.println("Balance: " + this.balance);
+        System.out.println("--------------------------------");
     }
 
     // getter method

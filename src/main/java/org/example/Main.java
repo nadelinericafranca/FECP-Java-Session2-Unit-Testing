@@ -7,9 +7,6 @@ public class Main { // BankSystem main class
         Scanner input = new Scanner(System.in);
         ArrayList<BankAccount> accounts = new ArrayList<>();
 
-        // Create an instance of BankAccount for calling the methods
-        BankAccount bankAccount = new BankAccount();
-
         int choice;
         String returnToMenu;
 
@@ -45,103 +42,113 @@ public class Main { // BankSystem main class
 
                         if (!makeInitialDeposit.equalsIgnoreCase("yes") && !makeInitialDeposit.equalsIgnoreCase("no")) {
                             System.out.println("Please answer YES or NO only.");
-                        } else {
-                            if (makeInitialDeposit.equalsIgnoreCase("yes")) {
-                                do {
-                                    System.out.print("Enter initial deposit amount: ");
-                                    initialDeposit = input.nextDouble();
+                        } else if (makeInitialDeposit.equalsIgnoreCase("yes")) {
+                            do {
+                                System.out.print("Enter initial deposit amount: ");
+                                initialDeposit = input.nextDouble();
 
-                                    if (initialDeposit <= 0) {
-                                        System.out.println("The deposit amount must be greater than 0");
-                                    }
-                                } while (initialDeposit <= 0);
-                            }
+                                if (initialDeposit <= 0) {
+                                    System.out.println("The deposit amount must be greater than 0");
+                                }
+                            } while (initialDeposit <= 0);
                         }
-
                     } while (!makeInitialDeposit.equalsIgnoreCase("yes") && !makeInitialDeposit.equalsIgnoreCase("no"));
 
                     BankAccount newAccount = new BankAccount(accountNumber, holderName, initialDeposit);
-                    newAccount.setBalance(initialDeposit); // set initial deposit
-
                     accounts.add(newAccount);
                     System.out.println("Account created successfully.");
                     break;
+
                 case 2: // View All Accounts
-                    for (int i = 0; i < accounts.size(); i++) {
-                        bankAccount.displayInformation();
+                    if (accounts.isEmpty()) {
+                        System.out.println("No accounts available.");
+                    } else {
+                        for (BankAccount acc : accounts) {
+                            acc.displayInformation();
+                        }
                     }
                     break;
+
                 case 3: // Check Balance
                     System.out.print("Enter Account Number: ");
                     accountNumber = input.nextInt();
 
-                    for (int i = 0; i < accounts.size(); i++) {
-                        if (bankAccount.getAccountNumber() == accountNumber) {
-                            bankAccount.displayInformation();
+                    boolean found = false;
+                    for (BankAccount acc : accounts) {
+                        if (acc.getAccountNumber() == accountNumber) {
+                            acc.displayInformation();
+                            found = true;
+                            break;
                         }
                     }
+                    if (!found) {
+                        System.out.println("Account not found.");
+                    }
                     break;
+
                 case 4: // Deposit
                     System.out.print("Enter Account Number: ");
                     accountNumber = input.nextInt();
 
-                    double depositAmount = 0;
+                    System.out.print("Enter amount to deposit: ");
+                    double depositAmount = input.nextDouble();
 
-                    do {
-                        System.out.print("Enter amount to deposit: ");
-                        depositAmount = input.nextDouble();
-
-                        if (depositAmount <= 0) {
-                            System.out.println("The deposit amount must be greater than 0");
-                        }
-                    } while (depositAmount <= 0);
-
-                    for (int i = 0; i < accounts.size(); i++) {
-                        if (bankAccount.getAccountNumber() == accountNumber) {
-                            bankAccount.deposit(depositAmount);
+                    found = false;
+                    for (BankAccount acc : accounts) {
+                        if (acc.getAccountNumber() == accountNumber) {
+                            if (depositAmount <= 0) {
+                                System.out.println("The deposit amount must be greater than 0");
+                            } else {
+                                acc.deposit(depositAmount);
+                                System.out.printf("Deposited %.2f successfully!\n", depositAmount);
+                            }
+                            found = true;
+                            break;
                         }
                     }
-                    System.out.printf("Deposited %.2f successfully!", depositAmount);
+                    if (!found) {
+                        System.out.println("Account not found.");
+                    }
                     break;
+
                 case 5: // Withdraw
                     System.out.print("Enter Account Number: ");
                     accountNumber = input.nextInt();
 
-                    double withdrawalAmount = 0;
+                    System.out.print("Enter amount to withdraw: ");
+                    double withdrawalAmount = input.nextDouble();
 
-                    do {
-                        System.out.print("Enter amount to withdraw: ");
-                        withdrawalAmount = input.nextDouble();
-
-                        if (withdrawalAmount <= 0) {
-                            System.out.println("The withdrawal amount must be greater than 0");
-                        }
-                    } while (withdrawalAmount <= 0);
-
-                    for (int i = 0; i < accounts.size(); i++) {
-                        if (bankAccount.getAccountNumber() == accountNumber) {
-                            double balance = bankAccount.getBalance();
-
-                            if (balance < withdrawalAmount) {
+                    found = false;
+                    for (BankAccount acc : accounts) {
+                        if (acc.getAccountNumber() == accountNumber) {
+                            if (withdrawalAmount <= 0) {
+                                System.out.println("The withdrawal amount must be greater than 0");
+                            } else if (acc.getBalance() < withdrawalAmount) {
                                 System.out.println("Withdrawal amount exceeds balance.");
                             } else {
-                                bankAccount.withdraw( withdrawalAmount);
+                                acc.withdraw(withdrawalAmount);
+                                System.out.printf("Withdrew %.2f successfully!\n", withdrawalAmount);
                             }
+                            found = true;
+                            break;
                         }
                     }
-                    System.out.printf("Withdrew %.2f successfully!", withdrawalAmount);
+                    if (!found) {
+                        System.out.println("Account not found.");
+                    }
                     break;
+
                 case 6: // Exit
                     System.out.println("---Thank you!---");
                     System.exit(0);
+
                 default:
-                    System.out.println("Invalid option. Please choose between 1-6");
+                    System.out.println("Invalid option. Please choose between 1-6.");
             }
 
             System.out.println();
             System.out.print("Would you like to return to the menu? (yes/no): ");
             returnToMenu = input.next();
-
             System.out.println();
 
         } while (returnToMenu.equalsIgnoreCase("yes"));
