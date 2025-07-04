@@ -16,11 +16,17 @@ public class BankAccount {
     }
 
     public void deposit(double depositAmount) {
-        this.balance += depositAmount;
+        if (depositAmount <= 0) {
+            System.out.println("The deposit amount must be greater than 0");
+        } else {
+            this.balance += depositAmount;
+        }
     }
 
     public void withdraw(double withdrawalAmount) {
-        if (this.balance < withdrawalAmount) {
+        if (withdrawalAmount <= 0) {
+            System.out.println("The withdrawal amount must be greater than 0");
+        } else if (this.balance < withdrawalAmount) {
             System.out.println("Withdrawal amount exceeds balance.");
         } else {
             this.balance -= withdrawalAmount;
@@ -37,6 +43,10 @@ public class BankAccount {
     // getter method
     public int getAccountNumber() {
         return accountNumber;
+    }
+
+    public String getHolderName() {
+        return holderName;
     }
 
     public double getBalance() {
