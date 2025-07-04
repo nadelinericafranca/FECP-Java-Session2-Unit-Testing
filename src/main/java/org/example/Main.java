@@ -22,23 +22,40 @@ public class Main { // BankSystem main class
             System.out.println("5. Withdraw");
             System.out.println("6. Exit");
 
-            System.out.print("Enter choice (1-6): ");
+            System.out.print("\nEnter choice (1-6): ");
             choice = input.nextInt();
+            input.nextLine();
+
+            System.out.println();
 
             switch (choice) {
                 case 1: // Create Account
-                    System.out.print("Enter Account Number: ");
-                    accountNumber = input.nextInt();
+                    boolean accountNumberExists;
+
+                    do {
+                        System.out.print("Enter Account Number: ");
+                        accountNumber = input.nextInt();
+                        input.nextLine();
+
+                        accountNumberExists = false;
+                        for (BankAccount acc : accounts) {
+                            if (acc.getAccountNumber() == accountNumber) {
+                                System.out.println("Account number already exists. Please enter a different one.");
+                                accountNumberExists = true;
+                                break;
+                            }
+                        }
+                    } while (accountNumberExists);
 
                     System.out.print("Enter Holder Name: ");
-                    holderName = input.next();
+                    holderName = input.nextLine();
 
                     String makeInitialDeposit;
                     double initialDeposit = 0;
 
                     do {
                         System.out.print("Initial deposit? (yes/no): ");
-                        makeInitialDeposit = input.next();
+                        makeInitialDeposit = input.nextLine();
 
                         if (!makeInitialDeposit.equalsIgnoreCase("yes") && !makeInitialDeposit.equalsIgnoreCase("no")) {
                             System.out.println("Please answer YES or NO only.");
@@ -56,6 +73,7 @@ public class Main { // BankSystem main class
 
                     BankAccount newAccount = new BankAccount(accountNumber, holderName, initialDeposit);
                     accounts.add(newAccount);
+
                     System.out.println("Account created successfully.");
                     break;
 
@@ -72,6 +90,7 @@ public class Main { // BankSystem main class
                 case 3: // Check Balance
                     System.out.print("Enter Account Number: ");
                     accountNumber = input.nextInt();
+                    input.nextLine();
 
                     boolean found = false;
                     for (BankAccount acc : accounts) {
@@ -89,9 +108,11 @@ public class Main { // BankSystem main class
                 case 4: // Deposit
                     System.out.print("Enter Account Number: ");
                     accountNumber = input.nextInt();
+                    input.nextLine();
 
                     System.out.print("Enter amount to deposit: ");
                     double depositAmount = input.nextDouble();
+                    input.nextLine();
 
                     found = false;
                     for (BankAccount acc : accounts) {
@@ -114,9 +135,11 @@ public class Main { // BankSystem main class
                 case 5: // Withdraw
                     System.out.print("Enter Account Number: ");
                     accountNumber = input.nextInt();
+                    input.nextLine();
 
                     System.out.print("Enter amount to withdraw: ");
                     double withdrawalAmount = input.nextDouble();
+                    input.nextLine();
 
                     found = false;
                     for (BankAccount acc : accounts) {
@@ -149,6 +172,7 @@ public class Main { // BankSystem main class
             System.out.println();
             System.out.print("Would you like to return to the menu? (yes/no): ");
             returnToMenu = input.next();
+
             System.out.println();
 
         } while (returnToMenu.equalsIgnoreCase("yes"));
