@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="FECP-Java-Session2-OOP-1" />
+        <module name="FECP5-Session2-Calculator" />
       </profile>
     </annotationProcessing>
   </component>
